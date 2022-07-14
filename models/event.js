@@ -1,0 +1,110 @@
+const db = require(".");
+const {Model, Sequelize} = require('sequelize');
+
+
+module.exports=(sequelize,DataTypes)=>{
+    class event extends Model{
+        static associate(models){
+                event.belongsToMany(models.aminitiesList,{foreignKey:"event_id", through:"eventAmenities"})
+                event.hasMany(models.booking,{foreignKey:"event_id"})
+                event.hasMany(models.availability,{foreignKey:"event_id"})
+                event.hasMany(models.ticket,{onDelete:'cascade',foreignKey:'event_id'})
+                event.belongsTo(models.attachments,{foreignKey:"attachment_id"})   
+                event.hasMany(models.eventGallery,{foreignKey:"event_id"})
+                event.belongsTo(models.users,{foreignKey:"user_id"})
+                event.belongsTo(models.eventCategory,{onDelete:'cascade',foreignKey:"category_id",as:'businessCategory'})
+                event.hasMany(models.eventRating,{onDelete:'cascade',foreignKey:"event_id"})
+        }
+    }
+    event.init({
+        title:{
+            type:DataTypes.STRING
+        },
+        description:{
+            type:DataTypes.TEXT
+        },
+        rating:{
+            type:DataTypes.FLOAT
+        },
+        ratingCount:{
+            type:DataTypes.INTEGER
+        },
+        price:{
+            type:DataTypes.INTEGER
+        },
+        address:{
+            type:DataTypes.STRING
+        },
+        startDate:{
+            type:DataTypes.DATE
+        },
+        endDate:{
+            type:DataTypes.DATE
+        },
+        startTime:{
+            type:DataTypes.TIME
+        },
+        endTime:{
+            type:DataTypes.TIME
+        },
+        capacity:{
+            type:DataTypes.INTEGER
+        },
+        available:{
+            type:DataTypes.INTEGER
+        },
+        category:{
+            type:DataTypes.STRING
+        },
+        bookmarked:{
+            type:DataTypes.BOOLEAN
+        },
+        featured:{
+            type:DataTypes.INTEGER
+        },
+        attachment_id:{
+            type:DataTypes.INTEGER
+        } ,
+        user_id:{
+            type:DataTypes.INTEGER
+        },
+        type:{
+            type:DataTypes.STRING
+        },
+        refundTime:{
+            type:DataTypes.INTEGER
+        },
+        termsAndCondition:{
+            type:DataTypes.TEXT
+        },
+        cancellationPolicy:{
+            type:DataTypes.TEXT
+        },
+        bookingUrl:{
+            type:DataTypes.STRING
+        },
+        lat:{
+            type:DataTypes.DOUBLE
+        },
+        long:{
+            type:DataTypes.DOUBLE
+        },
+        status:{
+            type:DataTypes.INTEGER
+        },
+        active:{
+            type:DataTypes.BOOLEAN
+        },
+        isTrending:{
+            type:DataTypes.BOOLEAN
+        },
+        showAddress:{
+            type:DataTypes.BOOLEAN
+        },
+        isOrder:{
+            type:DataTypes.BOOLEAN
+        }
+    },{sequelize:sequelize,modelName:'event'})
+
+    return event
+}
